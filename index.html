@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoiHub - Campus Life Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #121212;
+            color: #ffffff;
+            line-height: 1.4;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: #1f1f1f;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .back-arrow {
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+
+        .back-arrow:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .menu-dots {
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+
+        .menu-dots:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* App Info Section */
+        .app-section {
+            padding: 24px 16px 40px 16px;
+            background: #121212;
+        }
+
+        .app-header {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1976d2, #42a5f5);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 4px 16px rgba(25, 118, 210, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .app-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+        }
+
+        .app-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .app-title {
+            font-size: 22px;
+            font-weight: 400;
+            color: #ffffff;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .developer-name {
+            color: #81c784;
+            font-size: 14px;
+            margin-bottom: 2px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .developer-name:hover {
+            color: #a5d6a7;
+        }
+
+        .in-app-purchases {
+            color: #9e9e9e;
+            font-size: 12px;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 0 8px;
+            animation: slideInUp 0.6s ease-out 0.2s both;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .stat-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .stat-value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .star {
+            color: #ffc107;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #9e9e9e;
+        }
+
+        .divider {
+            width: 1px;
+            height: 30px;
+            background: #333;
+            margin: 0 8px;
+        }
+
+        /* Install Button */
+        .install-button {
+            background: linear-gradient(45deg, #8ab4f8, #64b5f6);
+            color: #1a1a1a;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: slideInUp 0.6s ease-out 0.3s both;
+        }
+
+        .install-button:hover {
+            background: linear-gradient(45deg, #7aa3e8, #5ba3f5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(138, 180, 248, 0.3);
+        }
+
+        .install-button:active {
+            transform: translateY(0);
+        }
+
+        .install-button.downloading {
+            background: #4caf50;
+            color: white;
+        }
+
+        .install-button.downloading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: downloadProgress 2s ease-in-out;
+        }
+
+        @keyframes downloadProgress {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Screenshots */
+        .screenshots-container {
+            margin-bottom: 24px;
+            animation: slideInUp 0.6s ease-out 0.4s both;
+        }
+
+        .screenshots-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .screenshots-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 4px 0 12px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #444 transparent;
+        }
+
+        .screenshots-scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .screenshots-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .screenshots-scroll::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 2px;
+        }
+
+        .screenshot {
+            width: 180px;
+            height: 320px;
+            border-radius: 16px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            text-align: center;
+            border: 2px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .screenshot:hover {
+            transform: scale(1.05);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        .screenshot::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            transition: opacity 0.3s ease;
+        }
+
+        .screenshot:hover::before {
+            opacity: 0.1;
+        }
+
+        .screenshot-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .screenshot-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .screenshot-1 {
+            background: linear-gradient(135deg, #1976d2, #42a5f5);
+        }
+
+        .screenshot-2 {
+            background: linear-gradient(135deg, #388e3c, #66bb6a);
+        }
+
+        .screenshot-3 {
+            background: linear-gradient(135deg, #f57c00, #ffb74d);
+        }
+
+        .screenshot-4 {
+            background: linear-gradient(135deg, #7b1fa2, #ba68c8);
+        }
+
+        .screenshot-5 {
+            background: linear-gradient(135deg, #d32f2f, #f44336);
+        }
+
+        /* About Section */
+        .about-section {
+            margin-bottom: 24px;
+            animation: slideInUp 0.6s ease-out 0.5s both;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            cursor: pointer;
+            padding: 8px 0;
+            transition: background 0.2s ease;
+        }
+
+        .section-header:hover {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 400;
+            color: #ffffff;
+        }
+
+        .expand-arrow {
+            color: #9e9e9e;
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .section-header:hover .expand-arrow {
+            transform: translateX(4px);
+        }
+
+        .about-text {
+            color: #e0e0e0;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(138, 180, 248, 0.1);
+            border: 1px solid rgba(138, 180, 248, 0.3);
+            color: #8ab4f8;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .tag:hover {
+            background: rgba(138, 180, 248, 0.2);
+            border-color: rgba(138, 180, 248, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Data Safety Section */
+        .data-safety {
+            margin-bottom: 40px;
+            animation: slideInUp 0.6s ease-out 0.6s both;
+        }
+
+        .safety-content {
+            color: #e0e0e0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Modal for screenshots */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 16px;
+            overflow: hidden;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(0,0,0,0.8);
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Download notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4caf50;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .app-section {
+                padding: 20px 12px 40px 12px;
+            }
+            
+            .app-title {
+                font-size: 20px;
+            }
+            
+            .screenshot {
+                width: 160px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="back-arrow" onclick="goBack()">←</div>
+        <div class="menu-dots" onclick="showMenu()">⋮</div>
+    </div>
+
+    <!-- App Section -->
+    <div class="app-section">
+        <!-- App Header -->
+        <div class="app-header">
+            <div class="app-icon">MH</div>
+            <div class="app-info">
+                <h1 class="app-title">MoiHub: Campus Life Hub</h1>
+                <div class="developer-name" onclick="showDeveloper()">KXBYTE</div>
+                <div class="in-app-purchases">In-app purchases</div>
+            </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat-item" onclick="showReviews()">
+                <div class="stat-value">
+                    <span>4.2</span>
+                    <span class="star">★</span>
+                </div>
+                <div class="stat-label">32 reviews ⓘ</div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="stat-item" onclick="showDownloadInfo()">
+                <div class="stat-value">📥</div>
+                <div class="stat-label">83 MB</div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="stat-item" onclick="showRatingInfo()">
+                <div class="stat-value">3+</div>
+                <div class="stat-label">Rated for 3+</div>
+            </div>
+        </div>
+
+        <!-- Install Button -->
+        <button class="install-button" id="installBtn" onclick="downloadApp()">
+            <span id="btnText">Install</span>
+        </button>
+
+        <!-- Screenshots -->
+        <div class="screenshots-container">
+            <h3 class="screenshots-title">Screenshots</h3>
+            <div class="screenshots-scroll">
+                <div class="screenshot screenshot-1" onclick="openScreenshot(1)">
+                    <div class="screenshot-content">
+                        <div class="screenshot-icon">🏠</div>
+                        <div>Home Dashboard</div>
+                        <small>Main navigation hub</small>
+                    </div>
+                </div>
+                <div class="screenshot screenshot-2" onclick="openScreenshot(2)">
+                    <div class="screenshot-content">
+                        <div class="screenshot-icon">🏘️</div>
+                        <div>Rentals</div>
+                        <small>Find your perfect room</small>
+                    </div>
+                </div>
+                <div class="screenshot screenshot-3" onclick="openScreenshot(3)">
+                    <div class="screenshot-content">
+                        <div class="screenshot-icon">🍕</div>
+                        <div>Food Delivery</div>
+                        <small>Order from local spots</small>
+                    </div>
+                </div>
+                <div class="screenshot screenshot-4" onclick="openScreenshot(4)">
+                    <div class="screenshot-content">
+                        <div class="screenshot-icon">🛒</div>
+                        <div>Marketplace</div>
+                        <small>Buy & sell secondhand</small>
+                    </div>
+                </div>
+                <div class="screenshot screenshot-5" onclick="openScreenshot(5)">
+                    <div class="screenshot-content">
+                        <div class="screenshot-icon">🛍️</div>
+                        <div>E-Shops</div>
+                        <small>Campus stores online</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div class="about-section">
+            <div class="section-header" onclick="toggleSection('about')">
+                <h2 class="section-title">About this app</h2>
+                <div class="expand-arrow" id="aboutArrow">→</div>
+            </div>
+            <div class="about-text" id="aboutText">
+                MoiHub is the ultimate campus companion for Moi University students. Our comprehensive platform seamlessly connects you with essential services including rental accommodations, local food delivery, a vibrant second-hand marketplace, campus e-shops, and much more. Designed specifically for the unique needs of campus life, MoiHub makes student living easier, more connected, and more affordable.
+            </div>
+            <div class="tags">
+                <span class="tag">Education</span>
+                <span class="tag">Campus Life</span>
+                <span class="tag">Student Services</span>
+                <span class="tag">Marketplace</span>
+                <span class="tag">Dating</span>
+            </div>
+        </div>
+
+        <!-- Data Safety -->
+        <div class="data-safety">
+            <div class="section-header" onclick="toggleSection('safety')">
+                <h2 class="section-title">Data safety</h2>
+                <div class="expand-arrow" id="safetyArrow">→</div>
+            </div>
+            <div class="safety-content" id="safetyContent">
+                Safety starts with understanding how developers collect and share your data. Data privacy and security practices may vary based on your use, region, and age. The developer provided this information and may update it over time.
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for screenshots -->
+    <div class="modal" id="screenshotModal" onclick="closeModal()">
+        <div class="modal-close">×</div>
+        <div class="modal-content" id="modalContent">
+            <!-- Screenshot will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Download notification -->
+    <div class="notification" id="notification">
+        <div id="notificationText">Download started!</div>
+    </div>
+
+    <script>
+        // Screenshot modal functionality
+        function openScreenshot(index) {
+            const modal = document.getElementById('screenshotModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            const screenshots = [
+                { title: 'Home Dashboard', desc: 'Main navigation hub with quick access to all services' },
+                { title: 'Rentals', desc: 'Browse available rooms and apartments near campus' },
+                { title: 'Food Delivery', desc: 'Order from your favorite local restaurants' },
+                { title: 'Marketplace', desc: 'Buy and sell secondhand items with other students' },
+                { title: 'E-Shops', desc: 'Shop from campus stores and local businesses online' }
+            ];
+            
+            const screenshot = screenshots[index - 1];
+            modalContent.innerHTML = `
+                <div class="screenshot screenshot-${index}" style="width: 300px; height: 500px; margin: 0;">
+                    <div class="screenshot-content">
+                        <div class="screenshot-icon" style="font-size: 48px;">${getScreenshotIcon(index)}</div>
+                        <div style="font-size: 18px; font-weight: bold;">${screenshot.title}</div>
+                        <small style="text-align: center; padding: 0 20px;">${screenshot.desc}</small>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('screenshotModal');
+            modal.classList.remove('show');
+        }
+
+        function getScreenshotIcon(index) {
+            const icons = ['🏠', '🏘️', '🍕', '🛒', '🛍️'];
+            return icons[index - 1];
+        }
+
+        // Download functionality
+        function downloadApp() {
+            const btn = document.getElementById('installBtn');
+            const btnText = document.getElementById('btnText');
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            // Change button state
+            btn.classList.add('downloading');
+            btnText.textContent = 'Downloading...';
+            btn.disabled = true;
+            
+            // Show notification
+            notificationText.textContent = 'Download started!';
+            notification.classList.add('show');
+            
+            // Simulate download process
+            setTimeout(() => {
+                // You can replace this URL with your actual GitHub Releases URL
+                const downloadUrl = 'https://github.com/yourusername/moihub/releases/download/v1.0.0/MoiHub.apk';
+                
+                // Create download link
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = 'MoiHub.apk';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Update notification
+                notificationText.textContent = 'Download complete!';
+                
+                // Reset button after download
+                setTimeout(() => {
+                    btn.classList.remove('downloading');
+                    btnText.textContent = 'Open';
+                    btn.disabled = false;
+                    notification.classList.remove('show');
+                }, 1000);
+            }, 2000);
+        }
+
+        // Other interactive functions
+        function goBack() {
+            // You can implement actual navigation here
+            alert('Going back to moihub website...');
+        }
+
+        function showMenu() {
+            alert('Menu options:\n- Share app\n- Flag as inappropriate\n- Add to wishlist');
+        }
+
+        function showDeveloper() {
+            alert('MoiHub Team\nContact: info.moihub@gmail.com\nMore apps by this developer →');
+        }
+
+        function showReviews() {
+            alert('Reviews and ratings\n★★★★☆ 4.2 out of 5\nBased on 5,000+ reviews\n\nMost recent:\n"Great app for campus life!" - 5★\n"Very helpful for finding rentals" - 4★');
+        }
+
+        function showDownloadInfo() {
+            alert('Download information:\nApp size: 83 MB\nVersion: 1.0.0\nLast updated: August 2025\nRequires Android 6.0+');
+        }
+
+        function showRatingInfo() {
+            alert('Content rating: 18+\nSuitable for ages 18 and up\nNo inappropriate content');
+        }
+
+        // Section toggle functionality
+        function toggleSection(section) {
+            const arrow = document.getElementById(section + 'Arrow');
+            const content = document.getElementById(section + 'Content') || document.getElementById(section + 'Text');
+            
+            if (arrow.textContent === '→') {
+                arrow.textContent = '↓';
+                if (content) content.style.display = 'block';
+            } else {
+                arrow.textContent = '→';
+                if (content) content.style.display = 'none';
+            }
+        }
+
+        // Smooth scrolling for screenshots
+        const screenshotsContainer = document.querySelector('.screenshots-scroll');
+        
+        let isScrolling = false;
+        let startX;
+        let scrollLeft;
+
+        screenshotsContainer.addEventListener('mousedown', (e) => {
+            isScrolling = true;
+            startX = e.pageX - screenshotsContainer.offsetLeft;
+            scrollLeft = screenshotsContainer.scrollLeft;
+            screenshotsContainer.style.cursor = 'grabbing';
+        });
+
+        screenshotsContainer.addEventListener('mouseleave', () => {
+            isScrolling = false;
+            screenshotsContainer.style.cursor = 'grab';
+        });
+
+        screenshotsContainer.addEventListener('mouseup', () => {
+            isScrolling = false;
+            screenshotsContainer.style.cursor = 'grab';
+        });
+
+        screenshotsContainer.addEventListener('mousemove', (e) => {
+            if (!isScrolling) return;
+            e.preventDefault();
+            const x = e.pageX - screenshotsContainer.offsetLeft;
+            const walk = (x - startX) * 2;
+            screenshotsContainer.scrollLeft = scrollLeft - walk;
+        });
+
+        // Touch events for mobile
+        screenshotsContainer.addEventListener('touchstart', (e) => {
+            isScrolling = true;
+            startX = e.touches[0].pageX - screenshotsContainer.offsetLeft;
+            scrollLeft = screenshotsContainer.scrollLeft;
+        });
+
+        screenshotsContainer.addEventListener('touchmove', (e) => {
+            if (!isScrolling) return;
+            e.preventDefault();
+            const x = e.touches[0].pageX - screenshotsContainer.offsetLeft;
+            const walk = (x - startX) * 2;
+            screenshotsContainer.scrollLeft = scrollLeft - walk;
+        });
+
+        screenshotsContainer.addEventListener('touchend', () => {
+            isScrolling = false;
+        });
+    </script>
+</body>
+</html>  
