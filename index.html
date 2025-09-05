@@ -683,48 +683,37 @@
         }
 
         // Download functionality
-        function downloadApp() {
-            const btn = document.getElementById('installBtn');
-            const btnText = document.getElementById('btnText');
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notificationText');
-            
-            // Change button state
-            btn.classList.add('downloading');
-            btnText.textContent = 'Downloading...';
-            btn.disabled = true;
-            
-            // Show notification
-            notificationText.textContent = 'Download started!';
-            notification.classList.add('show');
-            
-            // Simulate download process
-            setTimeout(() => {
-                // You can replace this URL with your actual GitHub Releases URL
-               const downloadUrl = 'Moihub.apk';
-
-                
-                // Create download link
-                const link = document.createElement('a');
-                link.href = downloadUrl;
-                link.download = 'MoiHub.apk';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                // Update notification
-                notificationText.textContent = 'Download complete!';
-                
-                // Reset button after download
-                setTimeout(() => {
-                    btn.classList.remove('downloading');
-                    btnText.textContent = 'Open';
-                    btn.disabled = false;
-                    notification.classList.remove('show');
-                }, 1000);
-            }, 2000);
-        }
-
+// Download functionality
+function downloadApp() {
+    const btn = document.getElementById('installBtn');
+    const btnText = document.getElementById('btnText');
+    
+    // Change button state
+    btn.classList.add('downloading');
+    btnText.textContent = 'Wait as we prepare to download';
+    btn.disabled = true;
+    
+    // Simulate download process
+    setTimeout(() => {
+        // You can replace this URL with your actual GitHub Releases URL
+        const downloadUrl = 'Moihub.apk';
+        
+        // Create download link
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = 'MoiHub.apk';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Reset button after download
+        setTimeout(() => {
+            btn.classList.remove('downloading');
+            btnText.textContent = 'Open';
+            btn.disabled = false;
+        }, 1000);
+    }, 2000);
+}
         // Other interactive functions
         function goBack() {
             // You can implement actual navigation here
